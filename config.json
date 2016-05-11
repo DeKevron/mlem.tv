@@ -1,0 +1,11 @@
+{ 
+	"dest" : "./app",
+	"src" : "./src",
+    "paths" :
+        {
+            "destAssets" : "assets",
+            "srcAssets" : ""
+        },
+	"hostname" : "",
+	"env" : "dev"
+}

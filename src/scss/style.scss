@@ -1,0 +1,88 @@
+@import 'base'; /* Don't mess with this, just don't... */
+
+/* Start yo'biznazz right here */
+
+/*
+
+Organize your site in pages and sections.
+If you have a page that has many sections prefix the section with the page name. Ex. home-hero.scss
+
+Include any components you may need in components/components. Create new ones as needed.
+
+*/
+
+@import 'pages/page';
+
+@import 'sections/section';
+
+html, body {
+    background:#777;
+    margin:0;
+
+    font-family: 'GameOver';
+    overflow: hidden;
+
+    cursor: pointer;
+}
+#canvas {
+    position:fixed;
+    background:#777;
+}
+
+#tv-channel,#tv-searching,#tv-loading {
+	font-family: 'GameOver';
+	font-size: 140px;
+	line-height: 120px;
+	color: #00ff00;
+	background: none;
+	position: absolute;
+	z-index:1;
+	padding: 0;
+	margin: 0;
+}
+
+#tv-channel {
+	top: 0;
+	left: 3%;
+}
+
+#tv-searching, #tv-loading {
+	text-align: center;
+	right: 3%;
+	bottom: 3%;
+	animation: blink-animation 0.5s steps(5, start) infinite;
+}
+
+#tv-loading {
+	display: none;
+}
+
+img#mlemgif {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	margin: auto;
+	overflow: auto;
+	z-index: 1;
+}
+
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+
+// MEDIA QUERIES
+ 
+// Pass in your PX width so all can see the breakpoint easier.
+// It will convert to EM.
+@include mq-max-width(900){
+	p{
+		@include font-size(12);
+	}
+}

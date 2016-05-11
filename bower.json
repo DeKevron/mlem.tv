@@ -1,0 +1,26 @@
+{
+    "name": "Holeshot",
+    "version": "1.1.0",
+    "authors": [
+        "don.jones@mullenlowe.com"
+    ],
+    "description": "Front-end framework",
+    "moduleType": [
+        "globals"
+    ],
+    "license": "MIT",
+    "private": true,
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components",
+        "test",
+        "tests"
+    ],
+    "dependencies": {
+        "jquery": "~2.*",
+        "normalize.css": "latest",
+        "animate.css": "latest",
+        "susy": "latest"
+    }
+}
