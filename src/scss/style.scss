@@ -27,7 +27,7 @@ html, body {
 #canvas {
     position:fixed;
     background-color:#777;
-    background-size:cover;
+    background-size: 100% 100%;
 }
 
 #tv-channel,#tv-searching,#tv-loading,#tv-prompt {
