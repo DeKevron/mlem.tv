@@ -4,6 +4,8 @@ var toggle = true,
     tvStatic = true,
 	// is the TV paused on a channel?
 	tvPause = false,
+	// Standby
+	tvStandBy = false,
 	// Current Channel - start it at VHF 2 :D
 	tvChannel = 2,
 	// channel prefix
@@ -12,7 +14,7 @@ var toggle = true,
 	tvChannelMin = 2, // VHF 2-13
 	tvChannelMax = 83, // UHF 14-83
 	// channel scan speed in milliseconds
-	tvChannelScanSpeed = 75,
+	tvChannelScanSpeed = 45,
 
 	// Giphy API Endpoint
 	gapi = 'http://api.giphy.com/v1/gifs/search?q=mlem&api_key=dc6zaTOxFJmzC&limit=100',
@@ -124,13 +126,15 @@ $(document).ready(function() {
 	}
 
 	function standby() {
-		$('img#mlemgif').attr('src', 'images/standby.png').on('load', function() {
-			$(this).show();
+		tvStandBy = true;
+		$('#canvas').css('background-image', 'url(images/standby.png)');
+		//$('img#mlemgif').attr('src', 'images/standby.png').on('load', function() {
+			//$(this).show();
 			$('#tv-loading').hide();
 			$('#tv-searching').hide();
 			$('#tv-channel').hide();
 			$('body').unbind('keyup click');
-		});
+		//});
 	}
 
 	function tuneChannel() {
@@ -173,7 +177,8 @@ $(document).ready(function() {
 	        requestAnimationFrame(loop);
 	        return;
 	    }
-	    if(!tvPause) {
+
+	    if(!tvPause && !tvStandBy) {
 	    	noise(ctx);
 	    } else {
 	    	interference(ctx);
