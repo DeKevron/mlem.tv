@@ -123,9 +123,21 @@ $(document).ready(function() {
 	    ctx.putImageData(idata, 0, 0);
 	}
 
+	function standby() {
+		$('img#mlemgif').attr('src', 'images/standby.png').on('load', function() {
+			$(this).show();
+			$('#tv-loading').hide();
+			$('#tv-searching').hide();
+			$('#tv-channel').hide();
+			$('body').unbind('keyup click');
+		});
+	}
+
 	function tuneChannel() {
+		console.log('tune');
 		//$('img#mlemgif').attr('src', 'images/mlem'+padZero(tvChannel,3)+'.gif').on('load', function() {
-		$('img#mlemgif').attr('src', gdata[tvChannel-2].images.fixed_height.url).on('load', function() {
+		$('#canvas').css('background-image', 'url('+gdata[tvChannel-3].images.fixed_height_still.url+')');
+		$('img#mlemgif').attr('src', gdata[tvChannel-3].images.fixed_height.url).on('load', function() {
 			$(this).show();
 			$('#tv-loading').hide();
 			// setTimeout(function() {
@@ -135,6 +147,7 @@ $(document).ready(function() {
 	}
 
 	function detuneChannel() {
+		$('#canvas').css('background-image', '');
 		$('img#mlemgif').attr('src', 'images/blank.gif').hide();
 		$('#tv-loading').hide();
 		$('#tv-searching').show();
@@ -192,6 +205,8 @@ $(document).ready(function() {
 				updateChannel();
 				// check hash and load channel
 				loadHash();
+			} else {
+				standby();
 			}
 		});
 	}

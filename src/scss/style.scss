@@ -16,7 +16,7 @@ Include any components you may need in components/components. Create new ones as
 @import 'sections/section';
 
 html, body {
-    background:#777;
+    background-color:#777;
     margin:0;
 
     font-family: 'GameOver';
@@ -26,7 +26,8 @@ html, body {
 }
 #canvas {
     position:fixed;
-    background:#777;
+    background-color:#777;
+    background-size:cover;
 }
 
 #tv-channel,#tv-searching,#tv-loading,#tv-prompt {
