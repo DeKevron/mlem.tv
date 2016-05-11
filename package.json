@@ -1,7 +1,7 @@
 {
-  "name": "Holeshot",
-  "version": "1.1.0",
-  "description": "Front-end framework",
+  "name": "MLEMdotTV",
+  "version": "1.0",
+  "description": "Celebration of cute animals going mlem.",
   "main": "gulpfile.js",
   "private": true,
   "scripts": {
