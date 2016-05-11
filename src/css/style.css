@@ -602,7 +602,7 @@ html, body {
   position: fixed;
   background: #777; }
 
-#tv-channel, #tv-searching, #tv-loading {
+#tv-channel, #tv-searching, #tv-loading, #tv-prompt {
   font-family: 'GameOver';
   font-size: 140px;
   line-height: 120px;
@@ -615,7 +615,16 @@ html, body {
 
 #tv-channel {
   top: 0;
-  left: 3%; }
+  left: 3%;
+  text-align: left; }
+
+#tv-prompt {
+  font-size: 50px;
+  line-height: 200px;
+  display: none;
+  top: 0;
+  left: 3%;
+  text-align: left; }
 
 #tv-searching, #tv-loading {
   text-align: center;
