@@ -6,16 +6,20 @@ var toggle = true,
 	tvPause = false,
 	// Current Channel - start it at VHF 2 :D
 	tvChannel = 2,
+	// channel prefix
+	tvChannelPre = 'CH ',
 	// min and max chanels to cycle through
 	tvChannelMin = 2, // VHF 2-13
 	tvChannelMax = 83, // UHF 14-83
+	// channel scan speed in milliseconds
+	tvChannelScanSpeed = 75,
 
 	// Giphy API Endpoint
 	gapi = 'http://api.giphy.com/v1/gifs/search?q=mlem&api_key=dc6zaTOxFJmzC&limit=100',
 	gdata,
 
 	// User prompt for interaction
-	userPromptCount = 5, // cycle channels before prompting user
+	userPromptCount = 20, // cycle channels before prompting user
 	userPrompt = true; 
 
 $(document).ready(function() {
@@ -41,7 +45,7 @@ $(document).ready(function() {
 		if(hash.indexOf('channel') >= 0) {
 			//tvPause = true;
 			tvChannel = parseInt(hash.replace('channel', ''));
-			$('#tv-channel').text('CH '+padZero(tvChannel, 3));
+			$('#tv-channel').text(tvChannelPre+padZero(tvChannel, 3));
 			toggleSearch();
 		}
 	}
@@ -56,7 +60,7 @@ $(document).ready(function() {
 				} else {
 					tvChannel = 2;
 				}
-				$('#tv-channel').text('CH '+padZero(tvChannel, 3));
+				$('#tv-channel').text(tvChannelPre+padZero(tvChannel, 3));
 				window.location.hash = '';
 			} else {
 				window.location.hash = 'channel'+padZero(tvChannel, 3);
@@ -72,7 +76,7 @@ $(document).ready(function() {
 			} else if(!userPrompt) {
 				$('#tv-prompt').hide();
 			}
-		}, 575);
+		}, tvChannelScanSpeed);
 	}
 
 	// pads the channel number with zeros to closer match appearance of old TVs
@@ -169,9 +173,11 @@ $(document).ready(function() {
 	// // check hash and load channel
 	// loadHash();
 
-	// Get giphy JSON
+	// Get giphy api JSON
 	function getGiphy() {
 		$.getJSON(gapi, function(data) {
+			// Set channel
+			$('#tv-channel').text(tvChannelPre+padZero(tvChannel, 3));
 			//console.log(data);
 			if(data.meta.status === 200) {
 				gdata = data.data;
@@ -190,6 +196,7 @@ $(document).ready(function() {
 		});
 	}
 
+	// Kick it off with some giphy data
 	getGiphy();
 
 	// bind click/touch/keyboard interactions
