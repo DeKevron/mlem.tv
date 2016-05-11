@@ -1,22 +1,27 @@
 // slows the static refresh rate by 0.5
-var toggle = true;
-// show static?
-var tvStatic = true;
-// is the TV paused on a channel?
-var tvPause = false;
-// Current Channel - start it at VHF 2 :D
-var tvChannel = 2;
-// min and max chanels to cycle through
-var tvChannelMin = 2; 
-var tvChannelMax = 20; 
+var toggle = true,
+	// show static?
+    tvStatic = true,
+	// is the TV paused on a channel?
+	tvPause = false,
+	// Current Channel - start it at VHF 2 :D
+	tvChannel = 2,
+	// min and max chanels to cycle through
+	tvChannelMin = 2, // VHF 2-13
+	tvChannelMax = 83, // UHF 14-83
 
-var userPromptCount = 5;
-var userPrompt = true;
+	// Giphy API Endpoint
+	gapi = 'http://api.giphy.com/v1/gifs/search?q=mlem&api_key=dc6zaTOxFJmzC&limit=100',
+	gdata,
+
+	// User prompt for interaction
+	userPromptCount = 5, // cycle channels before prompting user
+	userPrompt = true; 
 
 $(document).ready(function() {
 	// Set up the canvas for the static effect
 	var canvas = document.getElementById('canvas'),
-    ctx = canvas.getContext('2d');
+        ctx = canvas.getContext('2d');
 
 	// Closer to analouge appearance
 	canvas.width = canvas.height = 256;
@@ -104,7 +109,7 @@ $(document).ready(function() {
 	        len = buffer32.length,
 	        i = 0,
 	        pr = 456 * Math.random(),
-	        prs = 716 * Math.random();;
+	        prs = 716 * Math.random();
 
 	    for(; i < len;) {
 	        buffer32[i++] = ((pr % 255)|0) << 24;
@@ -115,7 +120,8 @@ $(document).ready(function() {
 	}
 
 	function tuneChannel() {
-		$('img#mlemgif').attr('src', 'images/mlem'+padZero(tvChannel,3)+'.gif').on('load', function() {
+		//$('img#mlemgif').attr('src', 'images/mlem'+padZero(tvChannel,3)+'.gif').on('load', function() {
+		$('img#mlemgif').attr('src', gdata[tvChannel-2].images.fixed_height.url).on('load', function() {
 			$(this).show();
 			$('#tv-loading').hide();
 			// setTimeout(function() {
@@ -158,10 +164,33 @@ $(document).ready(function() {
 	    requestAnimationFrame(loop);
 	})();
 
-	// start channel cycle
-	updateChannel();
-	// check hash and load channel
-	loadHash();
+	// // start channel cycle
+	// updateChannel();
+	// // check hash and load channel
+	// loadHash();
+
+	// Get giphy JSON
+	function getGiphy() {
+		$.getJSON(gapi, function(data) {
+			//console.log(data);
+			if(data.meta.status === 200) {
+				gdata = data.data;
+				tvChannelMax = data.pagination.total_count;
+				// Adjust for max request size
+				if(tvChannelMax > 100) {
+					tvChannelMax = 100;
+				}
+				tvChannelMax += 2; // offset for 2 being the first channel
+
+				// start channel cycle
+				updateChannel();
+				// check hash and load channel
+				loadHash();
+			}
+		});
+	}
+
+	getGiphy();
 
 	// bind click/touch/keyboard interactions
 	$('body').keyup(function(e){
