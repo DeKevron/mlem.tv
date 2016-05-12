@@ -20,8 +20,20 @@ var toggle = true,
 	gapi = 'http://api.giphy.com/v1/gifs/search?q=mlem&api_key=dc6zaTOxFJmzC&limit=100',
 	gdata,
 
+	// closed captions
+	tvCaptions = [
+		'mlem mlem mlem',
+		'[mlems audibly]',
+		'(mlem for infinity)',
+		'much mleming',
+		'a thousand mlems',
+		'meaning of life? mlems',
+		'mlemy mcmlemerton says mlem',
+		'greetings gentle-mlem'
+	];
+
 	// User prompt for interaction
-	userPromptCount = 20, // cycle channels before prompting user
+var userPromptCount = 20, // cycle channels before prompting user
 	userPrompt = true; 
 
 $(document).ready(function() {
@@ -56,8 +68,7 @@ $(document).ready(function() {
 	function updateChannel() {
 		setInterval(function() {
 			if(!tvPause) {
-				//console.log('wait');
-				if(tvChannel < tvChannelMax) {
+				if(tvChannel < tvChannelMax-1) {
 					tvChannel++;
 				} else {
 					tvChannel = 2;
@@ -138,15 +149,19 @@ $(document).ready(function() {
 	}
 
 	function tuneChannel() {
-		console.log('tune');
 		//$('img#mlemgif').attr('src', 'images/mlem'+padZero(tvChannel,3)+'.gif').on('load', function() {
-		$('#canvas').css('background-image', 'url('+gdata[tvChannel-3].images.fixed_height_still.url+')');
-		$('img#mlemgif').attr('src', gdata[tvChannel-3].images.fixed_height.url).on('load', function() {
+		$('#canvas').css('background-image', 'url('+gdata[tvChannel-2].images.fixed_height_still.url+')');
+		$('img#mlemgif').attr('src', gdata[tvChannel-2].images.fixed_height.url).on('load', function() {
+			$(this).unbind('load');
 			$(this).show();
 			$('#tv-loading').hide();
-			// setTimeout(function() {
-			// 	$('#tv-channel').hide();
-			// }, 3000);
+			setTimeout(function() {
+				if(tvPause) {
+					$('#tv-channel').hide();
+					$('#tv-closedcaption span').text(tvCaptions[Math.floor(Math.random() * tvCaptions.length)]);
+					$('#tv-closedcaption').show();
+				}
+			}, 3000);
 		});
 	}
 
@@ -159,7 +174,9 @@ $(document).ready(function() {
 
 	// toggles the Search/Pause mode
 	function toggleSearch() {
+		
 		tvPause = !tvPause;
+		$('#tv-closedcaption').hide();
 		$('#tv-channel').show();
 		$('#tv-loading').show();
 		$('#tv-searching').hide();
@@ -196,7 +213,6 @@ $(document).ready(function() {
 		$.getJSON(gapi, function(data) {
 			// Set channel
 			$('#tv-channel').text(tvChannelPre+padZero(tvChannel, 3));
-			//console.log(data);
 			if(data.meta.status === 200) {
 				gdata = data.data;
 				tvChannelMax = data.pagination.total_count;
